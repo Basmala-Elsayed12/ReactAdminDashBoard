@@ -186,7 +186,7 @@ export default function UpdateUser() {
         <Form.Group className="mb-3">
           <Form.Control
             type="text"
-            placeholder="Date of Birth"
+            placeholder="YY-MM-DD"
             value={user.DOB}
             onChange={(e) => setUser({ ...user, DOB: e.target.value })}
           />
