@@ -1,68 +1,94 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "../../index.css";
 import { getAuthtoken } from "../../helper/Storage";
 import axios from "axios";
-import { useRef, useState } from "react";
-export default function AddUser() {
-  const auth = getAuthtoken();
-  const [user, setUser] = useState({
-    name: "",
 
+export default function AddUser() {
+  // Get authentication token
+  const auth = getAuthtoken();
+
+  // Initialize user state
+  const [user, setUser] = useState({
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     rePassword: "",
     role: "",
+    DOB: "", // Added DOB to match the form inputs
+    city: "", // Added city to match the form inputs
     err: "",
     loading: false,
     success: null,
   });
 
+  // Reference for profile image input
   const profileImg = useRef(null);
 
+  // Function to handle form submission and create a new user
   const createUser = (e) => {
     e.preventDefault();
 
+    // Set loading state
     setUser({ ...user, loading: true });
 
-    const formData = new FormData(); //b5od instance mn class w 27ot fyh el data elly gyaly mn el broswer
-    formData.append("name", user.name);
+    // Create form data object to hold the user details
+    const formData = new FormData();
+    formData.append("firstName", user.firstName);
+    formData.append("lastName", user.lastName);
 
     formData.append("email", user.email);
     formData.append("role", user.role);
     formData.append("password", user.password);
     formData.append("rePassword", user.rePassword);
+    formData.append("DOB", user.DOB); // Adding DOB to form data
+    formData.append("city", user.city); // Adding city to form data
 
+    // Append profile image if provided
     if (profileImg.current.files) {
       formData.append("profileImg", profileImg.current.files[0]);
     }
+
+    // Send POST request to create a new user
     axios
       .post("https://kemet-gp2024.onrender.com/api/v1/users", formData, {
-        headers: { token: auth.token },
+        headers: {
+          token: auth.token,
+        },
       })
       .then(() => {
+        // On success, reset the form and set success message
         setUser({
-          ...user,
-          name: "",
+          firstName: "",
+          lastName: "",
           email: "",
           password: "",
           rePassword: "",
           role: "",
+          DOB: "",
+          city: "",
           err: "",
           loading: false,
           success: "Added successfully",
         });
       })
-      .catch(() => {
+      .catch((error) => {
+        // On error, set error message
+        const errorMessage =
+          error.response && error.response.data && error.response.data.message
+            ? error.response.data.message
+            : "Failed to add user. Please try again.";
         setUser({
           ...user,
           loading: false,
           success: null,
-          err: "Failed to add user. Please try again.",
+          err: errorMessage,
         });
       });
   };
+
   return (
     <div className="forms-container">
       <h1 className="text-design">Add New User+</h1>
@@ -80,32 +106,39 @@ export default function AddUser() {
         <Form.Group className="mb-3">
           <Form.Control
             type="text"
-            placeholder="Name"
-            value={user.name}
-            onChange={(e) => setUser({ ...user, name: e.target.value })}
+            placeholder="firstName"
+            value={user.firstName}
+            onChange={(e) => setUser({ ...user, firstName: e.target.value })}
             required
           />
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Control
             type="text"
-            placeholder="role"
+            placeholder="lastName"
+            value={user.lastName}
+            onChange={(e) => setUser({ ...user, lastName: e.target.value })}
+            required
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Control
+            type="text"
+            placeholder="Role"
             value={user.role}
             onChange={(e) => setUser({ ...user, role: e.target.value })}
             required
           />
         </Form.Group>
-
         <Form.Group className="mb-3">
           <Form.Control
             type="email"
-            placeholder="email"
+            placeholder="Email"
             value={user.email}
             onChange={(e) => setUser({ ...user, email: e.target.value })}
             required
           />
         </Form.Group>
-
         <Form.Group className="mb-3">
           <Form.Control
             type="password"
@@ -156,156 +189,3 @@ export default function AddUser() {
     </div>
   );
 }
-
-// import React, { useRef, useState } from "react";
-// import Button from "react-bootstrap/Button";
-// import Form from "react-bootstrap/Form";
-// import axios from "axios";
-// import { getAuthtoken } from "../../helper/Storage";
-
-// export default function AddUser() {
-//   const auth = getAuthtoken();
-//   const [user, setUser] = useState({
-//     name: "",
-//     description: "",
-//     email: "",
-//     password: "",
-//     rePassword: "",
-//     role: "",
-//     err: "",
-//     loading: false,
-//     success: null,
-//   });
-
-//   const profileImg = useRef(null);
-
-//   const createUser = (e) => {
-//     e.preventDefault();
-//     setUser((prevState) => ({
-//       ...prevState,
-//       loading: true,
-//       err: "",
-//       success: null,
-//     }));
-
-//     const formData = new FormData();
-//     formData.append("name", user.name);
-//     formData.append("description", user.description);
-//     formData.append("email", user.email);
-//     formData.append("role", user.role);
-//     formData.append("password", user.password);
-//     formData.append("rePassword", user.rePassword);
-
-//     if (imgCover.current && imgCover.current.files[0]) {
-//       formData.append("imgCover", imgCover.current.files[0]);
-//     }
-
-//     axios
-//       .post("https://kemet-gp2024.onrender.com/api/v1/users", formData, {
-//         headers: {
-//           token: auth.token,
-//         },
-//       })
-//       .then((response) => {
-//         console.log(response);
-//         setUser({
-//           name: "",
-//           description: "",
-//           email: "",
-//           password: "",
-//           rePassword: "",
-//           role: "",
-//           err: "",
-//           loading: false,
-//           success: "User added successfully",
-//         });
-//       })
-//       .catch((error) => {
-//         console.error(error);
-//         const errorMessage =
-//           error.response && error.response.data && error.response.data.message
-//             ? error.response.data.message
-//             : "Failed to add user. Please try again.";
-//         setUser((prevState) => ({
-//           ...prevState,
-//           loading: false,
-//           success: null,
-//           err: errorMessage,
-//         }));
-//       });
-//   };
-
-//   return (
-//     <div className="add-form">
-//       <h1 className="text-center">Add New User</h1>
-//       {user.err && (
-//         <div className="alert alert-danger" role="alert">
-//           {user.err}
-//         </div>
-//       )}
-//       {user.success && (
-//         <div className="alert alert-success" role="alert">
-//           {user.success}
-//         </div>
-//       )}
-//       <Form onSubmit={createUser}>
-//         <Form.Group className="mb-3">
-//           <Form.Control
-//             type="text"
-//             placeholder="Name"
-//             value={user.name}
-//             onChange={(e) => setUser({ ...user, name: e.target.value })}
-//             required
-//           />
-//         </Form.Group>
-//         <Form.Group className="mb-3">
-//           <Form.Control
-//             type="text"
-//             placeholder="Role"
-//             value={user.role}
-//             onChange={(e) => setUser({ ...user, role: e.target.value })}
-//             required
-//           />
-//         </Form.Group>
-//         <Form.Group className="mb-3">
-//           <Form.Control
-//             type="email"
-//             placeholder="Email"
-//             value={user.email}
-//             onChange={(e) => setUser({ ...user, email: e.target.value })}
-//             required
-//           />
-//         </Form.Group>
-//         <Form.Group className="mb-3">
-//           <Form.Control
-//             type="password"
-//             placeholder="Password"
-//             value={user.password}
-//             onChange={(e) => setUser({ ...user, password: e.target.value })}
-//             required
-//           />
-//         </Form.Group>
-//         <Form.Group className="mb-3">
-//           <Form.Control
-//             type="password"
-//             placeholder="Confirm Password"
-//             value={user.rePassword}
-//             onChange={(e) => setUser({ ...user, rePassword: e.target.value })}
-//             required
-//           />
-//         </Form.Group>
-//         <Form.Group className="mb-3">
-//           <input className="form-control" type="file" ref={imgCover} />
-//         </Form.Group>
-//         <Button
-//           className="btn btn-dark w-100"
-//           variant="primary"
-//           type="submit"
-//           disabled={user.loading}
-//         >
-//           {user.loading ? "Adding..." : "Add New User+"}
-//         </Button>
-//       </Form>
-//     </div>
-//   );
-// }

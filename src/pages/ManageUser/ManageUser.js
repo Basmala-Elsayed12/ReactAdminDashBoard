@@ -66,7 +66,7 @@ export default function ManageUser() {
   return (
     <div className="p-5">
       <div className="table-header d-flex justify-content-between mb-3">
-        <h2 style={{ color: "#193175", fontWeight: "bold" }}>Manage User</h2>
+        <h2 style={{ color: "#193175", fontWeight: "bold" }}>ManageUsers</h2>
         <Link
           to={"/manage-user/add"}
           className="btn btn-success btn-text-center"
