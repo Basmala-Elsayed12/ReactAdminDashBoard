@@ -9,6 +9,7 @@ export default function ManageOrders() {
   const [order, setOrder] = useState({
     loading: true,
     results: [],
+    success: "",
     err: null,
     reload: 0,
   });
@@ -43,7 +44,11 @@ export default function ManageOrders() {
         }
       )
       .then((resp) => {
-        setOrder({ ...order, reload: order.reload + 1 });
+        setOrder({
+          ...order,
+          reload: order.reload + 1,
+          success: "order deleted successfully",
+        });
         console.log(resp.data);
       })
       .catch((err) => {
@@ -60,6 +65,11 @@ export default function ManageOrders() {
       {order.err && (
         <div className="alert alert-danger" role="alert">
           {order.err}
+        </div>
+      )}
+      {order.success && (
+        <div className="alert alert-success" role="alert">
+          {order.success}
         </div>
       )}
       <Table striped bordered hover variant="light" className="p-3 text-center">

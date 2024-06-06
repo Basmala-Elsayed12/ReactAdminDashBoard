@@ -3,6 +3,7 @@ import Table from "react-bootstrap/Table";
 import "../../index.css";
 import axios from "axios";
 import { getAuthtoken } from "../../helper/Storage";
+
 export default function ManageReviews() {
   const auth = getAuthtoken();
   const [review, setReview] = useState({
@@ -29,7 +30,7 @@ export default function ManageReviews() {
         console.log(err);
         setReview({ ...review, loading: false, err: "something went wrong" });
       });
-  }, [review.reload]); //mtnfze4 el fetch 8er lma deh tet8yar
+  }, [review.reload]);
 
   const deleteReview = (_id) => {
     axios
@@ -49,22 +50,18 @@ export default function ManageReviews() {
   return (
     <div className="p-5">
       <div className="table-header d-flex justify-content-between mb-3">
-        <h2 style={{ color: "#193175", fontWeight: "bold" }}> ManageReviews</h2>
+        <h2 style={{ color: "#193175", fontWeight: "bold" }}>
+          {" "}
+          Manage Reviews
+        </h2>
       </div>
-      <Table
-        striped
-        bordered
-        hover
-        variant="light"
-        className="p-3 text-center "
-      >
+      <Table striped bordered hover variant="light" className="p-3 text-center">
         <thead>
           <tr>
             <th>review-id</th>
             <th>text</th>
             <th>rate</th>
             <th>trip-id</th>
-            <th>userImage</th>
             <th>userName</th>
             <th>Action</th>
           </tr>
@@ -77,15 +74,10 @@ export default function ManageReviews() {
               <td>{reviews.rate}</td>
               <td>{reviews.trip}</td>
               <td>
-                <img
-                  className="table-img "
-                  src={reviews.user.profileImg}
-                  alt=""
-                />
-              </td>
-
-              <td>
-                {reviews.user.firstName} {reviews.user.lastName}
+                {/* Check if reviews.user exists */}
+                {reviews.user
+                  ? `${reviews.user.firstName} ${reviews.user.lastName}`
+                  : "Anonymous"}
               </td>
               <td>
                 <div>
