@@ -13,7 +13,7 @@ export default function UpdateUser() {
   const [user, setUser] = useState({
     firstName: "",
     lastName: "",
-    email: "",
+
     password: "",
     rePassword: "",
     profileImg: null,
@@ -35,7 +35,7 @@ export default function UpdateUser() {
     const formData = new FormData();
     formData.append("firstName", user.firstName);
     formData.append("lastName", user.lastName);
-    formData.append("email", user.email);
+
     formData.append("role", user.role);
     formData.append("password", user.password);
     formData.append("rePassword", user.rePassword);
@@ -54,7 +54,7 @@ export default function UpdateUser() {
         setUser({
           firstName: "",
           lastName: "",
-          email: "",
+
           password: "",
           rePassword: "",
           profileImg: null,
@@ -90,7 +90,7 @@ export default function UpdateUser() {
             ...prevState,
             firstName: resp.data.user.firstName || "",
             lastName: resp.data.user.lastName || "",
-            email: resp.data.user.email || "",
+
             password: resp.data.user.password || "",
             rePassword: resp.data.user.rePassword || "",
             profileImg: resp.data.user.profileImg || null,
@@ -151,14 +151,7 @@ export default function UpdateUser() {
             onChange={(e) => setUser({ ...user, lastName: e.target.value })}
           />
         </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Control
-            type="email"
-            placeholder="Email"
-            value={user.email}
-            onChange={(e) => setUser({ ...user, email: e.target.value })}
-          />
-        </Form.Group>
+
         <Form.Group className="mb-3">
           <Form.Control
             type="text"
