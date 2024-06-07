@@ -16,7 +16,9 @@ export default function ManageReviews() {
   useEffect(() => {
     setReview({ ...review, loading: true });
     axios
-      .get("https://kemet-gp2024.onrender.com/api/v1/reviews")
+      .get("https://kemet-gp2024.onrender.com/api/v1/reviews", {
+        headers: { token: auth.token },
+      })
       .then((resp) => {
         setReview({
           ...review,
@@ -63,6 +65,8 @@ export default function ManageReviews() {
             <th>rate</th>
             <th>trip-id</th>
             <th>userName</th>
+            <th>profileImage</th>
+
             <th>Action</th>
           </tr>
         </thead>
@@ -78,6 +82,17 @@ export default function ManageReviews() {
                 {reviews.user
                   ? `${reviews.user.firstName} ${reviews.user.lastName}`
                   : "Anonymous"}
+              </td>
+              <td>
+                {reviews.user && reviews.user.profileImg ? (
+                  <img
+                    className="table-img"
+                    src={reviews.user.profileImg}
+                    alt=""
+                  />
+                ) : (
+                  "No Image"
+                )}
               </td>
               <td>
                 <div>
