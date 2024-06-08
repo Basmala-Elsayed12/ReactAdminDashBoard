@@ -4,28 +4,20 @@ import Form from "react-bootstrap/Form";
 import "../../index.css";
 import { getAuthtoken } from "../../helper/Storage";
 import axios from "axios";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 export default function UpdateUser() {
   let { id } = useParams(); // Correctly extract the URL parameter
   const auth = getAuthtoken();
   const [user, setUser] = useState({
-    firstName: "",
-    lastName: "",
-
-    password: "",
-    rePassword: "",
-    profileImg: null,
     role: "",
-    DOB: "",
-    city: "",
+    isBlockled: false,
     err: "",
     loading: false,
     success: null,
     reload: false,
   });
-  const profileImg = useRef(null);
 
   const UpdateUser = (e) => {
     e.preventDefault();
@@ -33,18 +25,9 @@ export default function UpdateUser() {
     setUser((prevState) => ({ ...prevState, loading: true }));
 
     const formData = new FormData();
-    formData.append("firstName", user.firstName);
-    formData.append("lastName", user.lastName);
 
     formData.append("role", user.role);
-    formData.append("password", user.password);
-    formData.append("rePassword", user.rePassword);
-    formData.append("DOB", user.DOB);
-    formData.append("city", user.city);
-
-    if (profileImg.current.files.length > 0) {
-      formData.append("profileImg", profileImg.current.files[0]);
-    }
+    formData.append("isBlockled", user.isBlockled);
 
     axios
       .put(`https://kemet-gp2024.onrender.com/api/v1/users/${id}`, formData, {
@@ -52,15 +35,10 @@ export default function UpdateUser() {
       })
       .then(() => {
         setUser({
-          firstName: "",
-          lastName: "",
+          isBlockled: false,
 
-          password: "",
-          rePassword: "",
-          profileImg: null,
           role: "",
-          DOB: "",
-          city: "",
+
           err: "",
           loading: false,
           success: "User updated successfully",
@@ -88,15 +66,11 @@ export default function UpdateUser() {
         if (resp.data.user) {
           setUser((prevState) => ({
             ...prevState,
-            firstName: resp.data.user.firstName || "",
-            lastName: resp.data.user.lastName || "",
 
-            password: resp.data.user.password || "",
-            rePassword: resp.data.user.rePassword || "",
-            profileImg: resp.data.user.profileImg || null,
+            isBlockled: resp.data.user.isBlockled || "",
+
             role: resp.data.user.role || "",
-            city: resp.data.user.city || "",
-            DOB: resp.data.user.DOB ? resp.data.user.DOB.split("T")[0] : "",
+
             err: "",
             loading: false,
             success: null,
@@ -137,64 +111,21 @@ export default function UpdateUser() {
       <Form onSubmit={UpdateUser}>
         <Form.Group className="mb-3">
           <Form.Control
-            type="name"
-            placeholder="First Name"
-            value={user.firstName}
-            onChange={(e) => setUser({ ...user, firstName: e.target.value })}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Control
-            type="name"
-            placeholder="Last Name"
-            value={user.lastName}
-            onChange={(e) => setUser({ ...user, lastName: e.target.value })}
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Control
             type="text"
-            placeholder="Role"
+            placeholder="role"
             value={user.role}
             onChange={(e) => setUser({ ...user, role: e.target.value })}
           />
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Control
-            type="password"
-            placeholder="Password"
-            value={user.password}
-            onChange={(e) => setUser({ ...user, password: e.target.value })}
+            type="isBlockled"
+            placeholder="isBlockled"
+            value={user.isBlockled}
+            onChange={(e) => setUser({ ...user, isBlockled: e.target.value })}
           />
         </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Control
-            type="password"
-            placeholder="Re-enter Password"
-            value={user.rePassword}
-            onChange={(e) => setUser({ ...user, rePassword: e.target.value })}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Control
-            type="text"
-            placeholder="YY-MM-DD"
-            value={user.DOB}
-            onChange={(e) => setUser({ ...user, DOB: e.target.value })}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Control
-            type="text"
-            placeholder="City"
-            value={user.city}
-            onChange={(e) => setUser({ ...user, city: e.target.value })}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <input className="form-control" type="file" ref={profileImg}></input>
-        </Form.Group>
+
         <Button
           style={{ backgroundColor: "#193175", fontWeight: "bold" }}
           className="btn btn-dark w-100"

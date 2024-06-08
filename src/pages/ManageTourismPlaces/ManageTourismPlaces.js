@@ -111,8 +111,17 @@ export default function ManageTourismPlaces() {
               <td>
                 <img className="table-img" src={tourismPlace.imgCover} alt="" />
               </td>
+
               <td>
-                <img className="table-img" src={tourismPlace.images} alt="" />
+                <div style={{ width: "200px" }} className="my-3 mx-3 ">
+                  <div className="row  ">
+                    {tourismPlace.images.map((image) => (
+                      <div className="col-md-6 mb-3  ">
+                        <img className="table-img  " src={image} alt="" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </td>
               <td>
                 {tourismPlace.governrate ? tourismPlace.governrate.name : "N/A"}

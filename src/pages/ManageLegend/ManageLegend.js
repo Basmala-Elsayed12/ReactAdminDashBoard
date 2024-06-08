@@ -123,7 +123,7 @@ export default function ManageLegend() {
                 {legend.informationAbout}
               </td>
               <td>
-                <div style={{ width: "350px" }} className="my-2 mx-2">
+                <div style={{ width: "220px" }} className="my-2 mx-2">
                   <div className="row">
                     {legend.images.map((image, index) => (
                       <div className="col-md-6 mb-3" key={index}>

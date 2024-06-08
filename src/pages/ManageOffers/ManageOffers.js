@@ -135,7 +135,7 @@ export default function ManageOffers() {
                 />
               </td>
               <td>
-                <div style={{ width: "250px" }} className="my-3 mx-3 ">
+                <div style={{ width: "200px" }} className="my-3 mx-3 ">
                   <div className="row  ">
                     {offer.images.map((image) => (
                       <div className="col-md-6 mb-3  ">
