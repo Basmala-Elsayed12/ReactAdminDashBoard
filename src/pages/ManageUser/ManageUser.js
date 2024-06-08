@@ -86,7 +86,6 @@ export default function ManageUser() {
             <th>Email</th>
 
             <th>role</th>
-            <th>isBlocked</th>
 
             <th>Image</th>
 
@@ -104,9 +103,9 @@ export default function ManageUser() {
               </td>
 
               <td style={{ width: "100px" }}>{user.role}</td>
-              <td style={{ width: "100px" }}>
+              {/* <td style={{ width: "100px" }}>
                 {user.isBlocked ? "Yes" : "No"}
-              </td>
+              </td> */}
 
               <td>
                 <img className="table-img " src={user.profileImg} alt="" />

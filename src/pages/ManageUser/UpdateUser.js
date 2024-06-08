@@ -12,7 +12,7 @@ export default function UpdateUser() {
   const auth = getAuthtoken();
   const [user, setUser] = useState({
     role: "",
-    isBlockled: false,
+
     err: "",
     loading: false,
     success: null,
@@ -27,7 +27,6 @@ export default function UpdateUser() {
     const formData = new FormData();
 
     formData.append("role", user.role);
-    formData.append("isBlockled", user.isBlockled);
 
     axios
       .put(`https://kemet-gp2024.onrender.com/api/v1/users/${id}`, formData, {
@@ -35,8 +34,6 @@ export default function UpdateUser() {
       })
       .then(() => {
         setUser({
-          isBlockled: false,
-
           role: "",
 
           err: "",
@@ -66,8 +63,6 @@ export default function UpdateUser() {
         if (resp.data.user) {
           setUser((prevState) => ({
             ...prevState,
-
-            isBlockled: resp.data.user.isBlockled || "",
 
             role: resp.data.user.role || "",
 
@@ -117,14 +112,14 @@ export default function UpdateUser() {
             onChange={(e) => setUser({ ...user, role: e.target.value })}
           />
         </Form.Group>
-        <Form.Group className="mb-3">
+        {/* <Form.Group className="mb-3">
           <Form.Control
             type="isBlockled"
             placeholder="isBlockled"
             value={user.isBlockled}
             onChange={(e) => setUser({ ...user, isBlockled: e.target.value })}
           />
-        </Form.Group>
+        </Form.Group> */}
 
         <Button
           style={{ backgroundColor: "#193175", fontWeight: "bold" }}
