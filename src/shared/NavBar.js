@@ -4,6 +4,8 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link, useNavigate } from "react-router-dom";
 import { getAuthtoken, removetoken } from "../helper/Storage";
+import img2 from "../../src/images/Pharaoh-2.png"; // Correctly import the image
+
 export default function NavBar() {
   const navigate = useNavigate();
   const auth = getAuthtoken();
@@ -20,7 +22,17 @@ export default function NavBar() {
               className="nav-link text-bold text-lg"
               style={{ fontWeight: "bold" }}
             >
-              💫 KEMET
+              <img
+                src={img2}
+                alt="Pharaoh-2"
+                style={{
+                  width: "50px",
+                  marginRight: "15px",
+                  backgroundColor: "white",
+                  borderRadius: "50%",
+                }}
+              />
+              KEMET
             </Link>
           </Navbar.Brand>
           {/* Not authintcated routes */}
